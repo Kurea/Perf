@@ -1,6 +1,12 @@
 var pf = require('../pf');
 var millisecondsPerDay = 24 * 60 * 60 * 1000;
 
+const periodicity = {
+  'monthly': 1,
+  'quarterly': 3,
+  'yearly': 12,
+};
+
 const daysBetween = (startDate, endDate) => {
   return Math.round((endDate - startDate) / millisecondsPerDay);
 };
@@ -34,13 +40,42 @@ const getYield = (flows, lastValuation, initialValuation = 0, endDate = new Date
   return flowsSum / - ponderatedFlows;
 };
 
+const convertToFlow = (data) => {
+  var flows = [];
+  for (var i=0; i< data.length; i++) {
+    if (data[i]['recur']) {
+      flows = flows.concat(recur2Flow(data[i]));
+    } else {
+      flows.push({
+        'date': new Date(data[i]['date']),
+        'cost': data[i]['cost']
+      });
+    }
+  }
+  return flows;
+};
+
+const recur2Flow = (data) => {
+  var flows = [];
+  var period = periodicity[data['period']] || 0;
+  var startDate = new Date(data['start_date']);
+  var endDate = data['end_date'] ? new Date(data['end_date']) : new Date();
+  for(var curDate = startDate; curDate <= endDate; curDate = new Date(Date.UTC(curDate.getUTCFullYear(), curDate.getUTCMonth() + period, curDate.getUTCDate()))) {
+    flows.push({
+      'date': new Date(curDate),
+      'cost': data['cost']
+    });
+  }
+  return flows;
+};
+
 // display value as percent
 const displayAsPercent = (value) => {
   return parseFloat(value*100).toFixed(2)+' %';
 };
 
-var flows = pf.pf.asset1.flows;
-var y = getYield(flows, 19224.39);
+var flows = convertToFlow(pf.pf.oddo.flows);
+var y = getYield(flows, 28351.52);
 console.log(displayAsPercent(y));
 
 // ask user for wanted value
