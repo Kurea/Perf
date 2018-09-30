@@ -1,0 +1,27 @@
+{
+  "name": "Perf",
+  "version": "0.0.1",
+  "description": "Investment performance follower",
+  "author": "Claire",
+  "email": "claire.draperi@gmail.com",
+  "private": true,
+  "repository": "bitbucket:kurea/finance.git",
+  "scripts": {
+    "build": "browserify -g [ envify --NODE_ENV development ] src/index.js --debug -t babelify --outfile js/bundle.js",
+    "build-prod": "browserify src/index.js -t babelify | uglifyjs > js/bundle.js",
+    "test": "node node_modules/mocha/bin/mocha spec/test.js"
+  },
+  "devDependencies": {
+    "eslint": "^5.4.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "mocha": "^5.2.0",
+    "rewire": "^4.0.1"
+  },
+  "dependencies": {
+    "financejs": "^4.1.0"
+  }
+}

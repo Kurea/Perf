@@ -1,0 +1,11 @@
+/.env
+/.env.production
+/*.DS_Store
+/.tags
+/.on-save.json
+/coverage
+/node_modules/*
+/data/*
+/js/*
+conf.js
+pf.js
