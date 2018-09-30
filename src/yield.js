@@ -2,13 +2,7 @@ var pf = require('../pf');
 var millisecondsPerDay = 24 * 60 * 60 * 1000;
 
 const daysBetween = (startDate, endDate) => {
-  var sd = startDate;
-  var ed = endDate;
-  if (startDate > endDate) {
-    sd = endDate;
-    ed = startDate;
-  }
-  return Math.round((ed - sd) / millisecondsPerDay);
+  return Math.round((endDate - startDate) / millisecondsPerDay);
 };
 
 // R = (Vf - Vi - F)/(Vi - sum of FP)
@@ -18,13 +12,8 @@ const daysBetween = (startDate, endDate) => {
 // calculate ponderated flows
 const ponderateFlow = (flowDate, flowCost, startDate, endDate = new Date()) => {
   var nbDays = daysBetween(startDate, endDate);
-  var nbDaysBefore = daysBetween(flowDate, startDate);
-  return flowCost * (nbDays - nbDaysBefore) / nbDays;
-};
-
-// display value as percent
-const displayAsPercent = (value) => {
-  return parseFloat(value*100).toFixed(2)+' %';
+  var nbDaysBefore = daysBetween(startDate, flowDate);
+  return (nbDays == 0)? 0 : flowCost * (nbDays - nbDaysBefore) / nbDays;
 };
 
 const getYield = (flows, lastValuation, initialValuation = 0, endDate = new Date(), startDate) => {
@@ -45,9 +34,14 @@ const getYield = (flows, lastValuation, initialValuation = 0, endDate = new Date
   return flowsSum / - ponderatedFlows;
 };
 
+// display value as percent
+const displayAsPercent = (value) => {
+  return parseFloat(value*100).toFixed(2)+' %';
+};
+
 var flows = pf.pf.asset1.flows;
 var y = getYield(flows, 19224.39);
-
+console.log(displayAsPercent(y));
 
 // ask user for wanted value
 // 1. from origin --> todays valuation

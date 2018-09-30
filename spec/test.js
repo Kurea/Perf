@@ -1,6 +1,7 @@
+/* global it, describe */
 var rewire = require('rewire');
 var assert = require('assert');
-var funct = rewire('../src/alpha_api.js');
+var funct = rewire('../src/yield.js');
 
 describe('Main functions', function() {
   describe('#daysBetween()', function() {
@@ -15,31 +16,26 @@ describe('Main functions', function() {
 
     typeTest.forEach(function(value) {
       it('should return ' + value[0] + ' when startDate is ' + value[1] + ' and endDate is ' + value[2], function() {
-        assert.deepEqual( value[0], daysBetween(value[1], value[2]));
+        assert.deepStrictEqual( value[0], daysBetween(value[1], value[2]));
       });
 
     });
   });
 
-  describe('#getAllFlows()', function() {
-    var getAllFlows = funct.__get__('getAllFlows');
+  describe('#ponderateFlow()', function() {
+    // FP = flow * (nb days in period - nb days before flow)/ nb days in period
+    var ponderateFlow = funct.__get__('ponderateFlow');
     var typeTest = [
-      [[0,0,0,0,0,0,0,0,0,0,0,0,0,-1000], new Date('2017-06-01'), new Date('2017-06-14')],
-      [[-1000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], new Date('2017-06-14'), new Date('2017-06-30')],
-      [[0,0,0,0,0,0,0,0,0,0,0,0,0,-1000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0], new Date('2017-06-01'), new Date('2017-06-30')],
-      [[-1000], new Date('2017-06-14'), new Date('2017-06-14')],
-      [[0], new Date('2017-06-1'), new Date('2017-06-1')],
-      [[0,0,0,0,0,0,0,0,0,0,0,0,0], new Date('2017-06-1'), new Date('2017-06-13')],
+      [0, new Date('2017-06-01'), 1000, new Date('2017-06-01'), new Date('2017-06-01')],
+      [1000, new Date('2017-06-01'), 1000, new Date('2017-06-01'), new Date('2017-07-01')],
+      [0, new Date('2017-06-01'), 1000, new Date('2017-06-02'), new Date('2017-06-02')],
+      [1000*(31-31)/31, new Date('2017-06-01'), 1000, new Date('2017-05-01'), new Date('2017-06-01')],
+      [1000*(61-31)/61, new Date('2017-06-01'), 1000, new Date('2017-05-01'), new Date('2017-07-01')],
     ];
 
-    var flows = [{
-      'date' : '2017-06-14',
-      'cost': -1000
-    }];
-
     typeTest.forEach(function(value) {
-      it('should return ' + value[0] + ' when startDate is ' + value[1] + ' and endDate is ' + value[2], function() {
-        assert.deepEqual( value[0], getAllFlows(flows, value[1], value[2]));
+      it('should return ' + value[0] + ' when flowDate is ' + value[1] + ' and flowCost is ' + value[2] + ' between ' + value[3] + ' and ' + value[4], function() {
+        assert.deepStrictEqual( value[0], ponderateFlow(value[1], value[2], value[3], value[4]));
       });
 
     });
