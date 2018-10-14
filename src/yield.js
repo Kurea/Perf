@@ -39,6 +39,14 @@ module.exports.getYield = (flows, lastValuation, initialValuation = 0, endDate =
   return flowsSum / - ponderatedFlows;
 };
 
+module.exports.convertToAnualizedIRR = (globalYield, startDate, endDate) => {
+  // get nb years between end and startDate
+  var nbDays = daysBetween(startDate, endDate);
+  var nbYears = nbDays / 365.25;
+  // convert yield to annual
+  return Math.pow(1+globalYield, 1/nbYears)-1;
+};
+
 const convertToFlow = (data) => {
   var flows = [];
   for (var i=0; i< data.length; i++) {
@@ -51,9 +59,22 @@ const convertToFlow = (data) => {
       });
     }
   }
-  return flows;
+  return sortFlows(flows);
 };
 module.exports.convertToFlow = convertToFlow;
+
+const sortFlows = (flows) => {
+  return flows.sort((a, b) => {
+    // Compare two dates (could be of any type supported by the convert
+    // function above) and returns:
+    //  -1 : if a < b
+    //   0 : if a = b
+    //   1 : if a > b
+    // NaN : if a or b is an illegal date
+    // NOTE: The code inside isFinite does an assignment (=).
+    return isFinite(a['date']) && isFinite(b['date']) ? (a['date']>b['date'])-(a['date']<b['date']) : NaN;
+  });
+};
 
 const recur2Flow = (data) => {
   var flows = [];

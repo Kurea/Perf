@@ -22,6 +22,24 @@ describe('Yield functions', function() {
     });
   });
 
+  describe('#sortFlows()', function() {
+    var sortFlows = funct.__get__('sortFlows');
+    var typeTest = [
+      [[ {'date': new Date('2017-06-01'), 'cost': 100}, {'date': new Date('2018-06-01'), 'cost': 100} ],
+        [ {'date': new Date('2017-06-01'), 'cost': 100}, {'date': new Date('2018-06-01'), 'cost': 100} ]],
+      [[ {'date': new Date('2017-06-01'), 'cost': 100}, {'date': new Date('2018-06-01'), 'cost': 100} ],
+        [ {'date': new Date('2018-06-01'), 'cost': 100}, {'date': new Date('2017-06-01'), 'cost': 100} ]],
+    ];
+
+    typeTest.forEach(function(value) {
+      it('should return ' + value[0] + ' when startDate is ' + value[1] + ' and endDate is ' + value[2], function() {
+        assert.deepStrictEqual( value[0], sortFlows(value[1], value[2]));
+      });
+
+    });
+  });
+
+
   describe('#ponderateFlow()', function() {
     // FP = flow * (nb days in period - nb days before flow)/ nb days in period
     var ponderateFlow = funct.__get__('ponderateFlow');

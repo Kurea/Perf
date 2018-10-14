@@ -28,26 +28,42 @@ const displayAsPercent = (value) => {
   return parseFloat(value*100).toFixed(2)+' %';
 };
 
-const calcAndDisplay = (name, navs, flows, startDate, endDate = 'last') => {
+const calcYield = (navs, flows, startDate, endDate = 'last') => {
   if(navs[endDate] && navs[startDate]) {
     var end = (endDate == 'last') ? new Date(): new Date(endDate);
-    name = (name.length < 10) ? name+'\t':name;
-    var val = yCalc.getYield(flows, navs[endDate], navs[startDate],end,new Date(startDate));
-    console.log(name + '\t: \t' + displayAsPercent(val));
+    return yCalc.getYield(flows, navs[endDate], navs[startDate],end,new Date(startDate));
   }
 };
 
+
+
 var flows;
+var results = [];
 
 pf.pf.forEach(function(data){
+  var result = {};
+  result.name = data.name;
+  flows = yCalc.convertToFlow(data.flows);
+  console.log(result.name + ': '+ flows[0]['date']);
+  result.origin = yCalc.getYield(flows, data.nav['last']);
+  result.annual = yCalc.convertToAnualizedIRR(result.origin, flows[0]['date'], new Date());
+  result.ytd = calcYield(data.nav, flows, '2017-12-31');
+  result.prevy = calcYield(data.nav, flows, '2016-12-31', '2017-12-31');
+  result.qtd = calcYield(data.nav, flows, '2018-06-30');
+  result.prevq = calcYield(data.nav, flows, '2018-03-31', '2018-06-30');
+  result.prevs = calcYield(data.nav, flows, '2017-12-31', '2018-06-30');
+  results.push(result);
+});
+
+results.forEach(function(data){
   console.log('Results for '+ data.name);
   console.log('----------------------------------');
-  flows = yCalc.convertToFlow(data.flows);
-  console.log('from origin\t: \t' + displayAsPercent(yCalc.getYield(flows, data.nav['last'])));
-  calcAndDisplay('YTD', data.nav, flows, '2017-12-31');
-  calcAndDisplay('prev. year', data.nav, flows, '2016-12-31', '2017-12-31');
-  calcAndDisplay('QTD', data.nav, flows, '2018-06-30');
-  calcAndDisplay('prev. quarter', data.nav, flows, '2018-03-31', '2018-06-30');
-  calcAndDisplay('prev. semester', data.nav, flows, '2017-12-31', '2018-06-30');
+  if (data.origin) console.log('from origin\t: \t' + displayAsPercent(data.origin));
+  if (data.annual) console.log('IRR annual.\t: \t' + displayAsPercent(data.annual));
+  if (data.ytd) console.log('YTD\t\t: \t' + displayAsPercent(data.ytd));
+  if (data.prevy) console.log('prev. year\t: \t' + displayAsPercent(data.prevy));
+  if (data.qtd) console.log('QTD\t\t: \t' + displayAsPercent(data.qtd));
+  if (data.prevq) console.log('prev. quarter\t: \t' + displayAsPercent(data.prevq));
+  if (data.prevs) console.log('prev. semester\t: \t' + displayAsPercent(data.prevs));
   console.log('');
 });
