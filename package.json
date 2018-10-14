@@ -5,11 +5,12 @@
   "author": "Claire",
   "email": "claire.draperi@gmail.com",
   "private": true,
-  "repository": "bitbucket:kurea/finance.git",
+  "repository": "github:kurea/perf.git",
   "scripts": {
     "build": "browserify -g [ envify --NODE_ENV development ] src/index.js --debug -t babelify --outfile js/bundle.js",
     "build-prod": "browserify src/index.js -t babelify | uglifyjs > js/bundle.js",
-    "test": "node node_modules/mocha/bin/mocha spec/test.js"
+    "test": "node node_modules/mocha/bin/mocha spec/test.js",
+    "start": "node src/interface.js"
   },
   "devDependencies": {
     "eslint": "^5.4.0",
@@ -22,6 +23,5 @@
     "rewire": "^4.0.1"
   },
   "dependencies": {
-    "financejs": "^4.1.0"
   }
 }
