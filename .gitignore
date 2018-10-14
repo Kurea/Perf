@@ -7,5 +7,6 @@
 /node_modules/*
 /data/*
 /js/*
+/built/**/*
 conf.js
 pf.js

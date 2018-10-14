@@ -20,28 +20,29 @@
 //  - same date N-1
 //  - 1/1/N-1
 
-const pf = require('../pf');
-const yCalc = require('./yield');
+import pf = require('../pf');
+import yCalc = require('./yield');
 
 // display value as percent
-const displayAsPercent = (value) => {
-  return parseFloat(value*100).toFixed(2)+' %';
+const displayAsPercent = (value: number): string => {
+  let val = parseFloat((value*100).toString()).toFixed(2);
+  return val.toString()+' %';
 };
 
-const calcYield = (navs, flows, startDate, endDate = 'last') => {
+const calcYield = (navs: object, flows: object, startDate: string, endDate: string = 'last'): number => {
   if(navs[endDate] && navs[startDate]) {
-    var end = (endDate == 'last') ? new Date(): new Date(endDate);
+    let end = (endDate == 'last') ? new Date(): new Date(endDate);
     return yCalc.getYield(flows, navs[endDate], navs[startDate],end,new Date(startDate));
   }
 };
 
 
 
-var flows;
-var results = [];
+let flows;
+let results = <any>[];
 
-pf.pf.forEach((data) => {
-  var result = {};
+pf.pf.forEach((data: any): any => {
+  let result = <any>{};
   result.name = data.name;
   flows = yCalc.convertToFlow(data.flows);
   result.totalInvest = yCalc.totalInvest(flows);
@@ -56,7 +57,7 @@ pf.pf.forEach((data) => {
   results.push(result);
 });
 
-results.forEach((data) => {
+results.forEach((data: any): void => {
   console.log('Results for '+ data.name);
   console.log('----------------------------------');
   if (data.open) console.log('open on\t\t: \t' + data.open.toDateString());
