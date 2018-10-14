@@ -1,4 +1,8 @@
 # Perf : Investment performance follower
+## Run as a user
 rename pf.example.js in pf.js and complete it
-if you want to code, install dependencies: `npm install`
-run : `npm start`
+run: `npm start`
+
+## Code
+install dependencies: `npm install`
+test: `npm test`

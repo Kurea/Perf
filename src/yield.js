@@ -39,7 +39,7 @@ module.exports.getYield = (flows, lastValuation, initialValuation = 0, endDate =
   return flowsSum / - ponderatedFlows;
 };
 
-module.exports.convertToFlow = (data) => {
+const convertToFlow = (data) => {
   var flows = [];
   for (var i=0; i< data.length; i++) {
     if (data[i]['recur']) {
@@ -53,6 +53,7 @@ module.exports.convertToFlow = (data) => {
   }
   return flows;
 };
+module.exports.convertToFlow = convertToFlow;
 
 const recur2Flow = (data) => {
   var flows = [];

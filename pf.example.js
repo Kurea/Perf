@@ -16,7 +16,11 @@ module.exports.pf = [
       {
         // example of one shot flow
         'date' : '2013-03-29',
-        'cost': -1
+        'cost': -1 // negative flow is an investment
+      },{
+        // example of one shot flow
+        'date' : '2014-03-29',
+        'cost': 1 // positive flow is a withdrowal
       },{
         // example of recuring flow
         'recur' : true,
