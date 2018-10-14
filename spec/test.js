@@ -32,13 +32,28 @@ describe('Yield functions', function() {
     ];
 
     typeTest.forEach(function(value) {
-      it('should return ' + value[0] + ' when startDate is ' + value[1] + ' and endDate is ' + value[2], function() {
-        assert.deepStrictEqual( value[0], sortFlows(value[1], value[2]));
+      it('should return ' + value[0] + ' when data is ' + JSON.stringify(value[1]), function() {
+        assert.deepStrictEqual( value[0], sortFlows(value[1]));
       });
 
     });
   });
 
+  describe('#totalInvest()', function() {
+    var totalInvest = funct.__get__('totalInvest');
+    var typeTest = [
+      [-200, [ {'date': new Date('2017-06-01'), 'cost': -100}, {'date': new Date('2018-06-01'), 'cost': -100} ]],
+      [-100, [ {'date': new Date('2017-06-01'), 'cost': -100}, {'date': new Date('2018-06-01'), 'cost': 100} ]],
+      [0, [ {'date': new Date('2017-06-01'), 'cost': 100}, {'date': new Date('2018-06-01'), 'cost': 100} ]],
+    ];
+
+    typeTest.forEach(function(value) {
+      it('should return ' + value[0] + ' when data is ' + JSON.stringify(value[1]), function() {
+        assert.deepStrictEqual( value[0], totalInvest(value[1]));
+      });
+
+    });
+  });
 
   describe('#ponderateFlow()', function() {
     // FP = flow * (nb days in period - nb days before flow)/ nb days in period

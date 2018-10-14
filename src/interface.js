@@ -40,11 +40,11 @@ const calcYield = (navs, flows, startDate, endDate = 'last') => {
 var flows;
 var results = [];
 
-pf.pf.forEach(function(data){
+pf.pf.forEach((data) => {
   var result = {};
   result.name = data.name;
   flows = yCalc.convertToFlow(data.flows);
-  console.log(result.name + ': '+ flows[0]['date']);
+  result.totalInvest = yCalc.totalInvest(flows);
   result.origin = yCalc.getYield(flows, data.nav['last']);
   result.annual = yCalc.convertToAnualizedIRR(result.origin, flows[0]['date'], new Date());
   result.ytd = calcYield(data.nav, flows, '2017-12-31');
@@ -55,9 +55,10 @@ pf.pf.forEach(function(data){
   results.push(result);
 });
 
-results.forEach(function(data){
+results.forEach((data) => {
   console.log('Results for '+ data.name);
   console.log('----------------------------------');
+  if (data.totalInvest) console.log('invest from origin: \t' + data.totalInvest);
   if (data.origin) console.log('from origin\t: \t' + displayAsPercent(data.origin));
   if (data.annual) console.log('IRR annual.\t: \t' + displayAsPercent(data.annual));
   if (data.ytd) console.log('YTD\t\t: \t' + displayAsPercent(data.ytd));
