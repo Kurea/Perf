@@ -45,8 +45,9 @@ pf.pf.forEach((data) => {
   result.name = data.name;
   flows = yCalc.convertToFlow(data.flows);
   result.totalInvest = yCalc.totalInvest(flows);
+  result.open = flows[0]['date'];
   result.origin = yCalc.getYield(flows, data.nav['last']);
-  result.annual = yCalc.convertToAnualizedIRR(result.origin, flows[0]['date'], new Date());
+  result.annual = yCalc.convertToAnualizedIRR(result.origin, result.open, new Date());
   result.ytd = calcYield(data.nav, flows, '2017-12-31');
   result.prevy = calcYield(data.nav, flows, '2016-12-31', '2017-12-31');
   result.qtd = calcYield(data.nav, flows, '2018-06-30');
@@ -58,6 +59,7 @@ pf.pf.forEach((data) => {
 results.forEach((data) => {
   console.log('Results for '+ data.name);
   console.log('----------------------------------');
+  if (data.open) console.log('open on\t\t: \t' + data.open.toDateString());
   if (data.totalInvest) console.log('invest from origin: \t' + data.totalInvest);
   if (data.origin) console.log('from origin\t: \t' + displayAsPercent(data.origin));
   if (data.annual) console.log('IRR annual.\t: \t' + displayAsPercent(data.annual));
