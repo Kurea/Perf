@@ -32,11 +32,12 @@ const calcAndDisplay = (name, navs, flows, startDate, endDate = 'last') => {
   if(navs[endDate] && navs[startDate]) {
     var end = (endDate == 'last') ? new Date(): new Date(endDate);
     name = (name.length < 10) ? name+'\t':name;
-    console.log(name + '\t: \t' + displayAsPercent(yCalc.getYield(flows, navs[endDate], navs[startDate],end,new Date(startDate))));
+    var val = yCalc.getYield(flows, navs[endDate], navs[startDate],end,new Date(startDate));
+    console.log(name + '\t: \t' + displayAsPercent(val));
   }
 };
 
-var tv, flows, y;
+var flows;
 
 pf.pf.forEach(function(data){
   console.log('Results for '+ data.name);
