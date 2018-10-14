@@ -29,7 +29,7 @@ const displayAsPercent = (value: number): string => {
   return val.toString()+' %';
 };
 
-const calcYield = (navs: object, flows: object, startDate: string, endDate: string = 'last'): number => {
+const calcYield = (navs: yCalc.Navs, flows: yCalc.Flow[], startDate: string, endDate: string = 'last'): number => {
   if(navs[endDate] && navs[startDate]) {
     let end = (endDate == 'last') ? new Date(): new Date(endDate);
     return yCalc.getYield(flows, navs[endDate], navs[startDate],end,new Date(startDate));
@@ -38,10 +38,10 @@ const calcYield = (navs: object, flows: object, startDate: string, endDate: stri
 
 
 
-let flows;
+let flows: yCalc.Flow[];
 let results = <any>[];
 
-pf.pf.forEach((data: any): any => {
+pf.pf.forEach((data: yCalc.PFDesc): any => {
   let result = <any>{};
   result.name = data.name;
   flows = yCalc.convertToFlow(data.flows);
