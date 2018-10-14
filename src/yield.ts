@@ -96,18 +96,8 @@ export const convertToFlow = (data: FlowDesc[]): Flow[] => {
 // sort flows by date
 const sortFlows = (flows: Flow[]): Flow[] => {
   return flows.sort((a: Flow, b: Flow): number => {
-    // Compare two dates (could be of any type supported by the convert
-    // function above) and returns:
-    //  -1 : if a < b
-    //   0 : if a = b
-    //   1 : if a > b
-    // NaN : if a or b is an illegal date
-    //return isFinite(adate) && isFinite(bdate) ?
-    //(adate > bdate) - (adate < bdate) :
-    //NaN;
     let adate = a['date'].valueOf();
     let bdate = b['date'].valueOf();
-    if (!isFinite(adate) || !isFinite(bdate)) return NaN;
     if (adate > bdate) return 1;
     if (adate < bdate) return -1;
     return 0;
