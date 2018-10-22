@@ -20,18 +20,18 @@
 //  - same date N-1
 //  - 1/1/N-1
 
-import pf = require('../pf');
-import yCalc = require('./yield');
+import { pf } from "../pf"
+import * as yCalc from "./yield"
 
 // display value as percent
 const displayAsPercent = (value: number): string => {
-  let val = parseFloat((value*100).toString()).toFixed(2);
-  return val.toString()+' %';
+  let val: string = parseFloat((value*100).toString()).toFixed(2);
+  return val+' %';
 };
 
 const calcYield = (navs: yCalc.Navs, flows: yCalc.Flow[], startDate: string, endDate: string = 'last'): number => {
   if(navs[endDate] && navs[startDate]) {
-    let end = (endDate == 'last') ? new Date(): new Date(endDate);
+    let end: Date = (endDate == 'last') ? new Date(): new Date(endDate);
     return yCalc.getYield(flows, navs[endDate], navs[startDate],end,new Date(startDate));
   }
 };
@@ -41,7 +41,7 @@ const calcYield = (navs: yCalc.Navs, flows: yCalc.Flow[], startDate: string, end
 let flows: yCalc.Flow[];
 let results = <any>[];
 
-pf.pf.forEach((data: yCalc.PFDesc): any => {
+pf.forEach((data: yCalc.PFDesc): any => {
   let result = <any>{};
   result.name = data.name;
   flows = yCalc.convertToFlow(data.flows);
