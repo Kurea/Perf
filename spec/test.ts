@@ -1,7 +1,8 @@
 /* global it, describe */
 var rewire = require('rewire');
 var assert = require('assert');
-var funct = rewire('../src/yield.js');
+var funct = rewire('../src/yield.ts');
+var should = require('chai').should();
 
 describe('Yield functions', function() {
   describe('#daysBetween()', function() {
@@ -15,6 +16,7 @@ describe('Yield functions', function() {
     ];
 
     typeTest.forEach(function(value) {
+      value[0].should.equal(daysBetween(value[1], value[2]));
       it('should return ' + value[0] + ' when startDate is ' + value[1] + ' and endDate is ' + value[2], function() {
         assert.deepStrictEqual( value[0], daysBetween(value[1], value[2]));
       });
@@ -40,7 +42,7 @@ describe('Yield functions', function() {
   });
 
   describe('#totalInvest()', function() {
-    var totalInvest = funct.__get__('totalInvest');
+    var totalInvest = funct.totalInvest;
     var typeTest = [
       [-200, [ {'date': new Date('2017-06-01'), 'cost': -100}, {'date': new Date('2018-06-01'), 'cost': -100} ]],
       [-100, [ {'date': new Date('2017-06-01'), 'cost': -100}, {'date': new Date('2018-06-01'), 'cost': 100} ]],
@@ -141,7 +143,7 @@ describe('Yield functions', function() {
 
   describe('#convertToFlow()', function() {
     // FP = flow * (nb days in period - nb days before flow)/ nb days in period
-    var convertToFlow = funct.__get__('convertToFlow');
+    var convertToFlow = funct.convertToFlow;
     var typeTest = [
       [
         [{
