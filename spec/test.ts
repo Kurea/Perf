@@ -2,7 +2,6 @@
 var rewire = require('rewire');
 var assert = require('assert');
 var funct = rewire('../src/yield.ts');
-var should = require('chai').should();
 
 describe('Yield functions', function() {
   describe('#daysBetween()', function() {
@@ -16,7 +15,6 @@ describe('Yield functions', function() {
     ];
 
     typeTest.forEach(function(value) {
-      value[0].should.equal(daysBetween(value[1], value[2]));
       it('should return ' + value[0] + ' when startDate is ' + value[1] + ' and endDate is ' + value[2], function() {
         assert.deepStrictEqual( value[0], daysBetween(value[1], value[2]));
       });
