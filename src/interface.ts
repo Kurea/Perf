@@ -41,18 +41,18 @@ const displayAsPercent = (value: number): string => {
   return parseFloat((value * 100).toString()).toFixed(2) + ' %';
 };
 
-const calcYield = (navs: yCalc.Navs, flows: yCalc.Flow[], startDate: string, endDate: string = 'last'): number => {
+const calcYield = (navs: yCalc.Navs, flowsList: yCalc.Flow[], startDate: string, endDate: string = 'last'): number => {
   if(navs[endDate] && navs[startDate]) {
     const end: Date = (endDate === 'last') ? new Date(): new Date(endDate);
-    return yCalc.getYield(flows, navs[endDate], navs[startDate], end, new Date(startDate));
+    return yCalc.getYield(flowsList, navs[endDate], navs[startDate], end, new Date(startDate));
   }
 };
 
 let flows: yCalc.Flow[];
-let results: Result[] = [];
+const results: Result[] = [];
 
 pf.forEach((data: yCalc.PFDesc): any => {
-  let result: Result = {};
+  const result: Result = {};
   result.name = data.name;
   flows = yCalc.convertToFlow(data.flows);
   result.totalInvest = yCalc.totalInvest(flows);

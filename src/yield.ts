@@ -53,7 +53,7 @@ export const getYield = (flows: Flow[], lastValuation: number, initialValuation:
   let flowDate: Date;
   let flowCost: number;
   if(!startDate) startDate = new Date(flows[0].date.valueOf());
-  for (let flow of flows) {
+  for (const flow of flows) {
     flowDate = new Date(flow.date.valueOf());
     flowCost = flow.cost;
     if (flowDate >= startDate && flowDate < endDate) {
@@ -77,7 +77,7 @@ export const convertToAnualizedIRR = (globalYield: number, startDate: Date, endD
 export const convertToFlow = (data: FlowDesc[]): Flow[] => {
   let flows: Flow[] = [];
   let flow: Flow;
-  for (let i of data) {
+  for (const i of data) {
     if (i.recur) {
       flows = flows.concat(recur2Flow(i));
     } else {
@@ -110,7 +110,7 @@ export const totalInvest = (flows: Flow[]): number => {
 
 // convert recurring flows to unitary flows
 const recur2Flow = (data: FlowDesc): Flow[] => {
-  let flows: Flow[] = [];
+  const flows: Flow[] = [];
   let flow: Flow;
   const period: number = periodicity[data.period] || 0;
   const startDate: Date = new Date(data.start_date);
