@@ -1,0 +1,8 @@
+engines:
+  tslint:
+    enabled: true
+    config: tslint.json
+exclude_patterns:
+- "built/**/*"
+- "spec/**/*"
+- "node_modules/**/*"

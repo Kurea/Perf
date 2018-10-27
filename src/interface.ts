@@ -20,34 +20,44 @@
 //  - same date N-1
 //  - 1/1/N-1
 
-import { pf } from "../pf"
-import * as yCalc from "./yield"
+import { pf } from '../pf';
+import * as yCalc from './yield';
+
+interface Result {
+  name?: string;
+  totalInvest?: number;
+  open?: Date;
+  origin?: number;
+  annual?: number;
+  ytd?: number;
+  prevy?: number;
+  qtd?: number;
+  prevq?: number;
+  prevs?: number;
+}
 
 // display value as percent
 const displayAsPercent = (value: number): string => {
-  let val: string = parseFloat((value*100).toString()).toFixed(2);
-  return val+' %';
+  return parseFloat((value * 100).toString()).toFixed(2) + ' %';
 };
 
 const calcYield = (navs: yCalc.Navs, flows: yCalc.Flow[], startDate: string, endDate: string = 'last'): number => {
   if(navs[endDate] && navs[startDate]) {
-    let end: Date = (endDate == 'last') ? new Date(): new Date(endDate);
-    return yCalc.getYield(flows, navs[endDate], navs[startDate],end,new Date(startDate));
+    const end: Date = (endDate === 'last') ? new Date(): new Date(endDate);
+    return yCalc.getYield(flows, navs[endDate], navs[startDate], end, new Date(startDate));
   }
 };
 
-
-
 let flows: yCalc.Flow[];
-let results = <any>[];
+let results: Result[] = [];
 
 pf.forEach((data: yCalc.PFDesc): any => {
-  let result = <any>{};
+  let result: Result = {};
   result.name = data.name;
   flows = yCalc.convertToFlow(data.flows);
   result.totalInvest = yCalc.totalInvest(flows);
-  result.open = flows[0]['date'];
-  result.origin = yCalc.getYield(flows, data.nav['last']);
+  result.open = flows[0].date;
+  result.origin = yCalc.getYield(flows, data.nav.last);
   result.annual = yCalc.convertToAnualizedIRR(result.origin, result.open, new Date());
   result.ytd = calcYield(data.nav, flows, '2017-12-31');
   result.prevy = calcYield(data.nav, flows, '2016-12-31', '2017-12-31');
@@ -58,7 +68,7 @@ pf.forEach((data: yCalc.PFDesc): any => {
 });
 
 results.forEach((data: any): void => {
-  console.log('Results for '+ data.name);
+  console.log('Results for ' + data.name);
   console.log('----------------------------------');
   if (data.open) console.log('open on\t\t: \t' + data.open.toDateString());
   if (data.totalInvest) console.log('invest from origin: \t' + data.totalInvest);

@@ -1,0 +1,55 @@
+{
+  "rules": {
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
+    "ter-indent": [
+      true,
+      2
+    ],
+    "linebreak-style": [
+      true,
+      "LF"
+    ],
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "semicolon": [
+      true,
+      "always"
+    ]
+  },
+  "jsRules": {
+    "ter-indent": [
+      true,
+      2
+    ],
+    "linebreak-style": [
+      true,
+      "LF"
+    ],
+    "quotemark": [
+      true,
+      "single"
+    ],
+    "semicolon": [
+      true,
+      "always"
+    ]
+  },
+  "extends": [
+    "tslint:recommended",
+    "tslint-react",
+    "tslint-config-prettier",
+    "tslint-eslint-rules"
+  ],
+  "linterOptions": {
+    "exclude": [
+      "built/**/*.js",
+      "node_modules/**/*.ts",
+      "coverage/lcov-report/*.js"
+    ]
+  }
+}
